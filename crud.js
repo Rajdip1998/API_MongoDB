@@ -43,15 +43,23 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true }, (error, client) =>
     //     console.log(result);
     // })
 
-    const updatePromise = db.collection("tasks").updateMany({ task: "Database Development" }, {
-        $set: {
-            task: "Database Creation"
-        }
-    });
+    // const updatePromise = db.collection("tasks").updateMany({ task: "Database Development" }, {
+    //     $set: {
+    //         task: "Database Creation"
+    //     }
+    // });
 
-    updatePromise.then((result) => {
+    // updatePromise.then((result) => {
+    //     console.log(result);
+    // }).catch((error) => {
+    //     console.log(error);
+    // })
+
+    const deletePromise = db.collection("tasks").deleteMany({ completed: false });
+
+    deletePromise.then((result)=>{
         console.log(result);
-    }).catch((error) => {
+    }).catch((error)=>{
         console.log(error);
     })
 })
