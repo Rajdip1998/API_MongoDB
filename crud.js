@@ -32,14 +32,26 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true }, (error, client) =>
     //     console.log("Tasks Saved in Database");
     // })
 
-    db.collection("tasks").findOne({ _id:new ObjectId("627f39b8e23b93603156a2be")}, (error, result) => {
-        if (error) {
-            return console.log("Unable to fetch");
-        }
-        console.log(result);
-    })
+    // db.collection("tasks").findOne({ _id:new ObjectId("627f39b8e23b93603156a2be")}, (error, result) => {
+    //     if (error) {
+    //         return console.log("Unable to fetch");
+    //     }
+    //     console.log(result);
+    // })
 
     // db.collection('tasks').find({ completed: false }).toArray((error, result) => {
     //     console.log(result);
     // })
+
+    const updatePromise = db.collection("tasks").updateMany({ task: "Database Development" }, {
+        $set: {
+            task: "Database Creation"
+        }
+    });
+
+    updatePromise.then((result) => {
+        console.log(result);
+    }).catch((error) => {
+        console.log(error);
+    })
 })
