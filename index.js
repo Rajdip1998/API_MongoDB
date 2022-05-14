@@ -1,4 +1,4 @@
-const { MongoClient } = require('mongodb');
+const { MongoClient, ObjectId } = require('mongodb');
 
 const connectionURL = "mongodb://127.0.0.1:27017";
 
@@ -11,7 +11,7 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true }, (error, client) =>
 
     const db = client.db(databaseName);
 
-    // db.collection('user').insertMany([
+    // db.collection('tasks').insertMany([
     //     {
     //         "task": "Frontend Development",
     //         "completed": false
@@ -32,14 +32,14 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true }, (error, client) =>
     //     console.log("Tasks Saved in Database");
     // })
 
-    // db.collection("user").findOne({ task: "Frontend Development" }, (error, result) => {
-    //     if (error) {
-    //         return console.log("Unable to fetch");
-    //     }
-    //     console.log(result);
-    // })
-
-    db.collection('user').find({ completed: false }).toArray((error, result) => {
+    db.collection("tasks").findOne({ _id:new ObjectId("627f39b8e23b93603156a2be")}, (error, result) => {
+        if (error) {
+            return console.log("Unable to fetch");
+        }
         console.log(result);
     })
+
+    // db.collection('tasks').find({ completed: false }).toArray((error, result) => {
+    //     console.log(result);
+    // })
 })
