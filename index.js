@@ -1,54 +1,30 @@
-const mongoose = require('mongoose');
-const validator = require('validator');
+const express = require('express');
+require('./mongoose');
+const userRouter = require('./routers/user');
+const taskRouter = require('./routers/task');
 
-mongoose.connect("mongodb://127.0.0.1:27017/task-manager");
+const app = express();
 
-const User = mongoose.model('User', {
-    name: {
-        type: String,
-        required: true
-    },
-    age: {
-        type: Number,
-        default: 0,
-        validate(value) {
-            if (value < 0) {
-                throw new Error('Age must be Postive')
-            }
-        }
-    },
-    email: {
-        type: String,
-        required: true,
-        trim: true,
-        lowercase: true,
-        validate(value) {
-            if (!validator.isEmail(value)) {
-                throw new Error('Email does not exists');
-            }
-        }
-    },
-    password: {
-        type: String,
-        required: true,
-        trim: true,
-        validate(value) {
-            if (value.length <= 6 || value.toLowerCase() === "password") {
-                throw new Error('Set Password something else')
-            }
-        }
-    }
-});
+const port = process.env.PORT;
 
-const me = new User({
-    name: "Rajdip Banerjee",
-    email: 'rajDip@gmail.com',
-    age:24,
-    password:"1234567"
-});
+// app.use((req, res, next) => {
+//     if (req.method === "GET") {
+//         res.send("GET requests are disabled");
+//     } else {
+//         next();
+//     }
+// })
 
-me.save().then(() => {
-    console.log(me);
-}).catch((error) => {
-    console.log(error);
+// app.use((req, res) => {
+//     if (req.method) {
+//         res.status(503).send("Site is under Construction. Please try after some time");
+//     }
+// })
+
+app.use(express.json());
+app.use(userRouter);
+app.use(taskRouter);
+
+app.listen(port, () => {
+    console.log(`Server is up on port ${port}`);
 })
